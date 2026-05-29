@@ -17,7 +17,7 @@ password = "yourpassword"
 
 # Optional: bonus calculation
 # List the project names that count towards your bonus.
-# Bonus is earned on hours above min_hours: (bonus_hours - min_hours) * (hourly_rate / 2)
+# Bonus is earned on hours above min_hours: (bonus_hours - min_hours) * (hourly_rate * 0.49)
 #
 # [bonus]
 # hourly_rate = 1000.0   # rate paid by customer (same currency as your salary)

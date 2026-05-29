@@ -56,7 +56,7 @@ class Report:
     def bonus_amount(self) -> float | None:
         if self.bonus_cfg is None or self.bonus_eligible_hours is None:
             return None
-        return self.bonus_eligible_hours * (self.bonus_cfg.hourly_rate / 2)
+        return self.bonus_eligible_hours * (self.bonus_cfg.hourly_rate * 0.49)
 
 
 def build_report(

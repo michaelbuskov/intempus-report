@@ -64,11 +64,11 @@ def format_table(report: Report) -> None:
         rate = cfg_b.hourly_rate
         if cfg_b.min_hours > 0:
             console.print(
-                f"  [dim](Bonus = ({report.bonus_hours:.1f} h − {cfg_b.min_hours:.1f} h) × {rate:,.0f} / 2)[/dim]\n"
+                f"  [dim](Bonus = ({report.bonus_hours:.1f} h − {cfg_b.min_hours:.1f} h) × {rate:,.0f} × 49%)[/dim]\n"
             )
         else:
             console.print(
-                f"  [dim](Bonus = {report.bonus_hours:.1f} h × {rate:,.0f} / 2)[/dim]\n"
+                f"  [dim](Bonus = {report.bonus_hours:.1f} h × {rate:,.0f} × 49%)[/dim]\n"
             )
     else:
         console.print()
