@@ -83,16 +83,16 @@ Projects marked as bonus projects are shown with a ★ in the table output.
 
 ```
 bonus_eligible_hours = bonus_hours − min_hours   (floored at 0)
-expected_bonus       = bonus_eligible_hours × (hourly_rate / 2)
+expected_bonus       = bonus_eligible_hours × (hourly_rate × 0.49)
 ```
 
-The formula assumes the employee receives half the hourly rate for hours worked above the threshold.
+The formula assumes the employee receives 49% of the hourly rate for hours worked above the threshold.
 
 **Example** — 140 h of bonus-project hours, threshold 120 h, rate 1 000:
 
 ```
 bonus_eligible_hours = 140 − 120 = 20 h
-expected_bonus       = 20 × (1 000 / 2) = 10 000
+expected_bonus       = 20 × (1 000 × 0.49) = 9 800
 ```
 
 The table output with a bonus section looks like this:
@@ -111,9 +111,9 @@ Hours per project — May 2026
 │ Bonus hours (★)           │  140.0 h  │
 │   Threshold               │  120.0 h  │
 │   Bonus-eligible hours    │   20.0 h  │
-│ Expected bonus            │  10,000   │
+│ Expected bonus            │   9,800   │
 ╰───────────────────────────┴───────────╯
-  (Bonus = (140.0 h − 120.0 h) × 1,000 / 2)
+  (Bonus = (140.0 h − 120.0 h) × 1,000 × 49%)
 ```
 
 ---
