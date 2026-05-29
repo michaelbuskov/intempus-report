@@ -39,7 +39,10 @@ The `intempus-report` command is now available inside the venv.
 
 ## Configuration
 
-Create `~/.config/intempus/config.toml` (the tool will create a template on first run):
+The config file lives at `~/.config/intempus/config.toml`.  
+The tool creates a commented template on first run if the file does not exist.
+
+### Auth (required)
 
 ```toml
 [auth]
@@ -48,8 +51,70 @@ username = "your@email.com"
 password = "yourpassword"
 ```
 
-Replace `username` and `password` with your Intempus login credentials.
-That's it — no API key hunting required.
+| Field | Description |
+|---|---|
+| `base_url` | Base URL of your Intempus instance (default: `https://intempus.dk`) |
+| `username` | Your Intempus login email |
+| `password` | Your Intempus login password |
+
+### Bonus (optional)
+
+If your company pays a bonus based on billable hours, add a `[bonus]` section to unlock bonus calculations in the output:
+
+```toml
+[bonus]
+hourly_rate = 1000.0   # rate charged to the customer (in your salary currency)
+min_hours   = 120.0    # hours threshold — bonus only applies to hours above this
+projects = [
+  "Backend API",
+  "Code Review",
+]
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `hourly_rate` | ✅ | The hourly rate billed to the customer |
+| `min_hours` | ❌ | Minimum hours before bonus kicks in (default: `0`) |
+| `projects` | ❌ | List of project names that count toward the bonus (default: all projects) |
+
+Projects marked as bonus projects are shown with a ★ in the table output.
+
+#### How the bonus is calculated
+
+```
+bonus_eligible_hours = bonus_hours − min_hours   (floored at 0)
+expected_bonus       = bonus_eligible_hours × (hourly_rate / 2)
+```
+
+The formula assumes the employee receives half the hourly rate for hours worked above the threshold.
+
+**Example** — 140 h of bonus-project hours, threshold 120 h, rate 1 000:
+
+```
+bonus_eligible_hours = 140 − 120 = 20 h
+expected_bonus       = 20 × (1 000 / 2) = 10 000
+```
+
+The table output with a bonus section looks like this:
+
+```
+Hours per project — May 2026
+╭───────────────────────────┬───────────╮
+│ Project                   │ Hours     │
+├───────────────────────────┼───────────┤
+│ Backend API ★             │  112.0 h  │
+│ Code Review ★             │   28.0 h  │
+│ Meetings / Admin          │   12.0 h  │
+├───────────────────────────┼───────────┤
+│ Total                     │  152.0 h  │
+├───────────────────────────┼───────────┤
+│ Bonus hours (★)           │  140.0 h  │
+│   Threshold               │  120.0 h  │
+│   Bonus-eligible hours    │   20.0 h  │
+│ Expected bonus            │  10,000   │
+╰───────────────────────────┴───────────╯
+  (Bonus = (140.0 h − 120.0 h) × 1,000 / 2)
+```
 
 ---
 
@@ -61,10 +126,9 @@ intempus-report [OPTIONS]
 Options:
   -m, --month YYYY-MM   Month to report (default: current month)
   -f, --format          Output format: table (default), csv, json
-  -w, --work-model INT  Work model ID (default: 1; only relevant if your
-                        company uses multiple work models)
       --include-zero    Show projects with 0 hours
       --config PATH     Custom config file path
+      --debug           Print raw HTTP requests/responses to stderr
   --help                Show this message and exit.
 ```
 
